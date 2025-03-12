@@ -23,12 +23,3 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.mofe-username }}
-    - ${{ inputs.mofe-password }}
-    - --upload-testcases
-    - ${{ inputs.upload-testcases }}
-    - --upload-statement
-    - ${{ inputs.upload-statement }}
-    - --force-upload-statement
-    - ${{ inputs.force-upload-statement }}
