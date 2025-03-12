@@ -1,6 +1,3 @@
-rime
-statements-manager
-beautifulsoup4
 setuptools==66.0.0
 rich==13.9.4
 dacite==1.9.2
