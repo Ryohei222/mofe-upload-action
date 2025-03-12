@@ -54,6 +54,6 @@ if __name__ == "__main__":
             # テストケースをアップロードしたら zip ファイルを削除する
             Path("testcases.zip").unlink()
 
-        # 問題文をアップロードした場合、テストケースの説明をアップロードする
-        if args.upload_statement:
+        # いずれかのアップロードが行われた場合、テストケースの説明をアップロードする
+        if args.upload_statement or args.upload_testcases:
             upload_sample_explanations(client, problem_id, path / "tests")
