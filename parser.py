@@ -94,14 +94,13 @@ def parse_problem_toml(problem_toml_content: str) -> ProblemConfig:
         )
 
     testcase_sets_with_regex = []
-    for testcase_set_name, testcase_set in data["mofe"]["testcase_sets"].items():
-        testcase_set = testcase_set[0]
+    for testcase_set in data["mofe"]["testcase_sets"]:
         testcase_sets_with_regex.append(
             (
                 testcase_set["regex"],
                 TestcaseSetBase(
-                    aggregate_type=AggregateType.ALL,
-                    name=testcase_set_name,
+                    aggregate_type=AggregateType(testcase_set["aggregate_type"]),
+                    name=testcase_set["name"],
                     points=testcase_set["points"],
                 ),
             )
