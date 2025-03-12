@@ -1,10 +1,9 @@
 import argparse
-import re
 from pathlib import Path
 
 from mofeapi.client import Client
 
-from upload_sample_explanations import upload_sample_explanations
+from upload import upload_sample_explanations, upload_testcases
 from util import build_problem_params, compress_testcases, load_problem_toml, load_statement
 
 if __name__ == "__main__":
@@ -49,47 +48,11 @@ if __name__ == "__main__":
 
         # テストケースをアップロードする場合
         if args.upload_testcases:
-
             # テストケースを zip に圧縮する
             compress_testcases(path)
-
-            # すでに存在するテストケースをすべて削除する
-            old_testcase_sets, old_testcases = client.get_testcases(problem_id)
-            client.delete_multiple_testcases(problem_id, [testcase.id for testcase in old_testcases])
-
-            # テストケースセットを削除する
-            for testcase_set in old_testcase_sets:
-                if testcase_set.name == "sample" or testcase_set.name == "all":
-                    continue
-                client.delete_testcase_set(problem_id, testcase_set.id)
-
-            # テストケースをアップロードする
-            with open("testcases.zip", "rb") as f:
-                client.upload_testcases(problem_id, f.read())
-
-            # アップロードしたテストケースを取得する
-            new_testcase_sets, new_testcases = client.get_testcases(problem_id)
-
-            # 各テストケースセットについて、
-            # 1. そのセットがすでに MOFE 上に存在するか判定する
-            #     a. 存在する場合はそのセットの ID を取得し、points と aggregate_type を更新する
-            #     b. 存在しない場合はそのセットを作成する
-            # 2. 正規表現にマッチするテストケースを取得し、テストケースセットに追加する
-
-            for regex_pattern, testcase_set_base in problem_config.testcase_sets_with_regex:
-                for existing_testcase_set_base in new_testcase_sets:
-                    if existing_testcase_set_base.name == testcase_set_base.name:
-                        testcase_set_id = existing_testcase_set_base.id
-                        client.update_testcase_set(problem_id, testcase_set_id, testcase_set_base)
-                        break
-                else:
-                    client.create_testcase_set(problem_id, testcase_set_base)
-
-                testcase_ids = []
-                for testcase in new_testcases:
-                    if re.match(re.compile(regex_pattern), testcase.name):
-                        testcase_ids.append(testcase.id)
-                client.add_to_testcase_set_multiple(problem_id, testcase_set_id, testcase_ids)
+            upload_testcases(client, problem_config, Path("testcases.zip"))
+            # テストケースをアップロードしたら zip ファイルを削除する
+            Path("testcases.zip").unlink()
 
         # 問題文をアップロードした場合、テストケースの説明をアップロードする
         if args.upload_statement:
