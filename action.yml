@@ -1,0 +1,31 @@
+# action.yml
+name: 'MOFE upload'
+description: 'テストケースと問題文を MOFE にアップロードします'
+inputs:
+  mofe-username:
+    description: 'アップロードに使用する MOFE のアカウントのユーザー名'
+    required: true
+  mofe-password:
+    description: 'アップロードに使用する MOFE のアカウントのパスワード'
+    required: true
+  upload-testcases:
+    description: 'テストケースをアップロードするかどうか'
+    required: false
+    default: 'true'
+  upload-statement:
+    description: '問題文をアップロードするかどうか'
+    required: false
+    default: 'true'
+  force-upload-statement:
+    description: '問題文をアップロードする際に、既存の問題名と異なる問題をアップロードするかどうか'
+    required: false
+    default: 'false'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.mofe-username }}
+    - ${{ inputs.mofe-password }}
+    - --upload-testcases ${{ inputs.upload-testcases }}
+    - --upload-statement ${{ inputs.upload-statement }}
+    - --force-upload-statement ${{ inputs.force-upload-statement }}
