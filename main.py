@@ -34,6 +34,7 @@ if __name__ == "__main__":
     logger.debug("upload-testcases: %s", flag_upload_testcases)
     logger.debug("upload-statement: %s", flag_upload_statement)
     logger.debug("force-upload-statement: %s", flag_force_upload_statement)
+    logger.debug("use-debug-logging: %s", flag_use_debug_logging)
 
     client = Client()
     client.login(args.mofe_username, args.mofe_password)
