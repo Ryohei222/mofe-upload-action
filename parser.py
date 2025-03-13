@@ -1,5 +1,6 @@
 import re
 import tomllib
+from logging import getLogger
 
 from mofeapi.enums import AggregateType, Difficulty
 from mofeapi.models.testcase import TestcaseSetBase
@@ -12,6 +13,8 @@ from exceptions import (
     TitleNotFoundError,
 )
 from models import ProblemConfig, Statement
+
+logger = getLogger(__name__)
 
 
 def find_first_match(content: str, pattern: re.Pattern) -> str:
@@ -93,8 +96,17 @@ def parse_problem_toml(problem_toml_content: str) -> ProblemConfig:
             "テストケースセットの設定が見つかりません。problem.toml に [mofe.testcase_sets] というセクションがあるか確認してください。"
         )
 
+    logger.debug("loaded problem.toml")
+
+    logger.debug("id: %s", data["id"])
+
+    logger.debug("mofe: %s", data["mofe"])
+
+    logger.debug("mofe.testcase_sets: %s", data["mofe"]["testcase_sets"])
+
     testcase_sets_with_regex = []
     for testcase_set in data["mofe"]["testcase_sets"]:
+        logger.debug("find testcase_set: %s", testcase_set)
         testcase_sets_with_regex.append(
             (
                 testcase_set["regex"],
