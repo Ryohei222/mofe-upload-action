@@ -11,13 +11,17 @@ if __name__ == "__main__":
 
     parser.add_argument("mofe_username", type=str, help="MOFEのユーザー名")
     parser.add_argument("mofe_password", type=str, help="MOFEのパスワード")
-    parser.add_argument("--upload-testcases", type=bool, help="テストケースをアップロードするかどうか", default=True)
-    parser.add_argument("--upload-statement", type=bool, help="問題文をアップロードするかどうか", default=True)
+    parser.add_argument("--upload-testcases", type=str, help="テストケースをアップロードするかどうか", default="true")
+    parser.add_argument("--upload-statement", type=str, help="問題文をアップロードするかどうか", default="true")
     parser.add_argument(
-        "--force-upload-statement", type=bool, help="問題文を強制的にアップロードするかどうか", default=False
+        "--force-upload-statement", type=str, help="問題文を強制的にアップロードするかどうか", default="false"
     )
 
     args = parser.parse_args()
+
+    flag_upload_testcases = args.upload_testcases.lower() == "true"
+    flag_upload_statement = args.upload_statement.lower() == "true"
+    flag_force_upload_statement = args.force_upload_statement.lower() == "true"
 
     client = Client()
     client.login(args.mofe_username, args.mofe_password)
@@ -33,13 +37,13 @@ if __name__ == "__main__":
         position_in_contest = problem_config.position_in_contest
 
         # 問題文をアップロードする場合
-        if args.upload_statement:
+        if flag_upload_statement:
             # 問題文を読み込む
             statement = load_statement(path / "ss-out" / f"{position_in_contest}.md")
             problem_params = build_problem_params(statement, problem_config)
 
             # MOFE 上に存在する問題名と markdown の問題名が一致するかチェックする
-            if not args.force_upload_statement:
+            if not flag_force_upload_statement:
                 problem_on_mofe = client.get_problem(problem_id)
                 if problem_on_mofe.name != problem_params.name:
                     raise ValueError("MOFE 上の問題名と問題文の問題名が一致しません")
@@ -47,7 +51,7 @@ if __name__ == "__main__":
             client.update_problem(problem_id, problem_params)
 
         # テストケースをアップロードする場合
-        if args.upload_testcases:
+        if flag_upload_testcases:
             # テストケースを zip に圧縮する
             compress_testcases(path)
             upload_testcases(client, problem_config, Path("testcases.zip"))
@@ -55,5 +59,5 @@ if __name__ == "__main__":
             Path("testcases.zip").unlink()
 
         # いずれかのアップロードが行われた場合、テストケースの説明をアップロードする
-        if args.upload_statement or args.upload_testcases:
+        if flag_upload_statement or flag_upload_testcases:
             upload_sample_explanations(client, problem_id, path / "tests")
