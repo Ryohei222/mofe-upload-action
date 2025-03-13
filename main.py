@@ -1,5 +1,5 @@
 import argparse
-from logging import Formatter, StreamHandler, getLogger
+from logging import Formatter, StreamHandler, getLogger, root
 from pathlib import Path
 from sys import stdout
 
@@ -34,8 +34,8 @@ if __name__ == "__main__":
         formatter = Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
         handler = StreamHandler(stream=stdout)
         handler.setFormatter(formatter)
-        logger.addHandler(handler)
-        logger.setLevel("DEBUG")
+        root.addHandler(handler)
+        root.setLevel("DEBUG")
 
     logger.debug("upload-testcases: %s", flag_upload_testcases)
     logger.debug("upload-statement: %s", flag_upload_statement)
