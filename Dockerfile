@@ -20,4 +20,4 @@ RUN pip install -r /root/requirements.txt
 COPY *.py /
 
 # Code file to execute when the docker container starts up (`entrypoint.sh`)
-ENTRYPOINT ["python3", "/main.py", "${INPUT_MOFE-USERNAME}", "${INPUT_MOFE-PASSWORD}", "--upload-statement", "${INPUT_UPLOAD-STATEMENT}", "--upload-testcases", "${INPUT_UPLOAD-TESTCASES}", "--force-upload-statement", "${INPUT_FORCE-UPLOAD-STATEMENT}"]
+ENTRYPOINT ["python3", "/main.py", "$INPUT_MOFE-USERNAME", "$INPUT_MOFE-PASSWORD", "--upload-statement", "$INPUT_UPLOAD-STATEMENT", "--upload-testcases", "$INPUT_UPLOAD-TESTCASES", "--force-upload-statement", "$INPUT_FORCE-UPLOAD-STATEMENT"]
