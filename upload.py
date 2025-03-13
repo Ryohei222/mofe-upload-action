@@ -31,7 +31,9 @@ def upload_testcases(client: Client, problem_config: ProblemConfig, testcases_zi
     #     b. 存在しない場合はそのセットを作成する
     # 2. 正規表現にマッチするテストケースを取得し、テストケースセットに追加する
 
-    for regex_pattern, testcase_set_base in problem_config.testcase_sets_with_regex:
+    for testcase_set_with_regex in problem_config.testcase_sets:
+        regex_pattern = testcase_set_with_regex.regex
+        testcase_set_base = testcase_set_with_regex.testcase_set
         for existing_testcase_set_base in new_testcase_sets:
             if existing_testcase_set_base.name == testcase_set_base.name:
                 testcase_set_id = existing_testcase_set_base.id

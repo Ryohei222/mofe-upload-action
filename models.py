@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 from mofeapi.enums import Difficulty
 from mofeapi.models.testcase import TestcaseSetBase
@@ -16,6 +16,12 @@ class Statement:
 
 
 @dataclass
+class TestcaseSetWithRegex:
+    regex: str
+    testcase_set: TestcaseSetBase
+
+
+@dataclass
 class ProblemConfig:
     problem_id: int
     difficulty: Difficulty
@@ -23,4 +29,4 @@ class ProblemConfig:
     submission_limit_1: int
     submission_limit_2: int
     position_in_contest: str
-    testcase_sets_with_regex: List[Tuple[str, TestcaseSetBase]]
+    testcase_sets: List[TestcaseSetWithRegex]

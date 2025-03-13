@@ -20,6 +20,10 @@ inputs:
     description: '問題文をアップロードする際に、既存の問題名と異なる問題をアップロードするかどうか'
     required: false
     default: 'false'
+  use_debug_logging:
+    description: 'デバッグログを出力するかどうか'
+    required: false
+    default: 'false'  
 runs:
   using: 'docker'
   image: 'Dockerfile'
