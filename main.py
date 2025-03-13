@@ -57,8 +57,8 @@ if __name__ == "__main__":
             problem_params = build_problem_params(statement, problem_config)
 
             # MOFE 上に存在する問題名と markdown の問題名が一致するかチェックする
+            problem_on_mofe = client.get_problem(problem_id)
             if not flag_force_upload_statement:
-                problem_on_mofe = client.get_problem(problem_id)
                 if problem_on_mofe.name != problem_params.name:
                     raise ValueError("MOFE 上の問題名と問題文の問題名が一致しません")
 
