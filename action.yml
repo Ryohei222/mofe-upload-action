@@ -2,21 +2,21 @@
 name: 'MOFE upload'
 description: 'テストケースと問題文を MOFE にアップロードします'
 inputs:
-  mofe-username:
+  mofe_username:
     description: 'アップロードに使用する MOFE のアカウントのユーザー名'
     required: true
-  mofe-password:
+  mofe_password:
     description: 'アップロードに使用する MOFE のアカウントのパスワード'
     required: true
-  upload-testcases:
+  upload_testcases:
     description: 'テストケースをアップロードするかどうか'
     required: false
     default: 'true'
-  upload-statement:
+  upload_statement:
     description: '問題文をアップロードするかどうか'
     required: false
     default: 'true'
-  force-upload-statement:
+  force_upload_statement:
     description: '問題文をアップロードする際に、既存の問題名と異なる問題をアップロードするかどうか'
     required: false
     default: 'false'
