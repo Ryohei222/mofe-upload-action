@@ -1,6 +1,7 @@
 import argparse
-from logging import getLogger
+from logging import Formatter, StreamHandler, getLogger
 from pathlib import Path
+from sys import stdout
 
 from mofeapi.client import Client
 
@@ -29,6 +30,11 @@ if __name__ == "__main__":
     flag_use_debug_logging = args.use_debug_logging.lower() == "true"
 
     if flag_use_debug_logging:
+
+        formatter = Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+        handler = StreamHandler(stream=stdout)
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
         logger.setLevel("DEBUG")
 
     logger.debug("upload-testcases: %s", flag_upload_testcases)
