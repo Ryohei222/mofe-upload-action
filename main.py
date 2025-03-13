@@ -29,7 +29,7 @@ if __name__ == "__main__":
     flag_use_debug_logging = args.use_debug_logging.lower() == "true"
 
     if flag_use_debug_logging:
-        getLogger().setLevel("DEBUG")
+        logger.setLevel("DEBUG")
 
     logger.debug("upload-testcases: %s", flag_upload_testcases)
     logger.debug("upload-statement: %s", flag_upload_statement)
