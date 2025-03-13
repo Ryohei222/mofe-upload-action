@@ -12,7 +12,7 @@ from exceptions import (
     StatementNotFoundError,
     TitleNotFoundError,
 )
-from models import ProblemConfig, Statement
+from models import ProblemConfig, Statement, TestcaseSetWithRegex
 
 logger = getLogger(__name__)
 
@@ -108,9 +108,9 @@ def parse_problem_toml(problem_toml_content: str) -> ProblemConfig:
     for testcase_set in data["mofe"]["testcase_sets"]:
         logger.debug("find testcase_set: %s", testcase_set)
         testcase_sets_with_regex.append(
-            (
-                testcase_set["regex"],
-                TestcaseSetBase(
+            TestcaseSetWithRegex(
+                regex=testcase_set["regex"],
+                testcase_set=TestcaseSetBase(
                     aggregate_type=AggregateType(testcase_set["aggregate_type"]),
                     name=testcase_set["name"],
                     points=testcase_set["points"],
@@ -125,5 +125,5 @@ def parse_problem_toml(problem_toml_content: str) -> ProblemConfig:
         execution_time_limit=data["mofe"]["execution_time_limit"],
         submission_limit_1=data["mofe"]["submission_limit_1"],
         submission_limit_2=data["mofe"]["submission_limit_2"],
-        testcase_sets_with_regex=testcase_sets_with_regex,
+        testcase_sets=testcase_sets_with_regex,
     )
