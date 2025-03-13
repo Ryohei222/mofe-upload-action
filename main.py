@@ -29,13 +29,15 @@ if __name__ == "__main__":
     flag_force_upload_statement = args.force_upload_statement.lower() == "true"
     flag_use_debug_logging = args.use_debug_logging.lower() == "true"
 
-    if flag_use_debug_logging:
+    formatter = Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    handler = StreamHandler(stream=stdout)
+    handler.setFormatter(formatter)
+    root.addHandler(handler)
 
-        formatter = Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-        handler = StreamHandler(stream=stdout)
-        handler.setFormatter(formatter)
-        root.addHandler(handler)
+    if flag_use_debug_logging:
         root.setLevel("DEBUG")
+    else:
+        root.setLevel("INFO")
 
     logger.debug("upload-testcases: %s", flag_upload_testcases)
     logger.debug("upload-statement: %s", flag_upload_statement)
